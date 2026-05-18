@@ -23,8 +23,8 @@ jobs:
         with:
           python-version: "3.14"
 
-      # - run: pip install build
-      # - run: python -m build
+      - run: pip install build
+      - run: python -m build
 
       - name: Upload wheels to GH artifacts
         uses: actions/upload-artifact@v7
@@ -47,12 +47,12 @@ jobs:
           pattern: wheel*
           path: dist/
 
-      # - name: Publish to test PyPI
-      #   if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/')
-      #   uses: pypa/gh-action-pypi-publish@release/v1
-      #   with:
-      #     user: __token__
-      #     password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-      #     packages-dir: dist/
-      #     skip-existing: true
-      #     repository-url: https://test.pypi.org/legacy/
+      - name: Publish to test PyPI
+        if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/')
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          packages-dir: dist/
+          skip-existing: true
+          repository-url: https://test.pypi.org/legacy/
