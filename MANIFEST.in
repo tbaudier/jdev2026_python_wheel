@@ -1,0 +1,3 @@
+include LICENSE
+include README.md
+include jdev2026_python_wheel_thomas_baudier/data/*.npz
