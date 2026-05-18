@@ -1,23 +1,22 @@
 
 [project]
-name = "jdev2026-python-wheel-XXXXXX"
-version = "0.0.1"
+name = "jdev2026-python-wheel-thomas-baudier"
+version = "0.1.0"
 description = "Demo package"
 authors = [{name="Thomas"}]
 readme = "README.md"
 requires-python = ">=3.10"
 
 dependencies = [
-    "XXXXXXX",
+    "numpy",
 ]
 
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools.package-data]
+"jdev2026_python_wheel_thomas_baudier" = ["data/*.npz"]
 
-# [tool.setuptools.package-data]
-# "jdev2026_python_wheel_XXXXXX" = ["data/*.npz"]
-
-# [project.scripts]
-# decrypt-tool = "jdev2026_python_wheel_XXXXXX.decrypt_rsa:run_decrypt_rsa"
+[project.scripts]
+decrypt-tool = "jdev2026_python_wheel_thomas_baudier.decrypt_rsa:run_decrypt_rsa"
