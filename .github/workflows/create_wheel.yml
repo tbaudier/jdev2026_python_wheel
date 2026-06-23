@@ -1,0 +1,58 @@
+
+name: Publish package
+
+on:
+  push:
+    branches: [ master, working_example ]
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+
+
+jobs:
+  build-wheel:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone github repository
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+
+      - run: pip install build
+      - run: python -m build
+
+      - name: Upload wheels to GH artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: wheel
+          path: dist/
+
+  upload-wheel:
+    runs-on: ubuntu-latest
+    needs: [build-wheel]
+
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: wheel*
+          path: dist/
+
+      - name: Publish to test PyPI
+        if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/')
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          packages-dir: dist/
+          skip-existing: true
+          repository-url: https://test.pypi.org/legacy/
